@@ -1,11 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const dotenv = require("dotenv");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const userRoute = require("./routes/users");
 const authRoute = require("./routes/auth");
 const postRoute = require("./routes/posts");
+require("dotenv").config();
 
 const app = express();
 
@@ -13,17 +13,14 @@ const PORT = process.env.PORT || 5000;
 
 //mongoose mongoDb connection
 const connectDb = function () {
-	return mongoose.connect(
-		"mongodb+srv://vaibhav:9456114101v@gangland.koahg.mongodb.net/test?retryWrites=true&w=majority",
-		(error) => {
-			if (error) {
-				console.error(
-					`Failed to connect to mongo on startup - retrying in 5 sec\n${error}`
-				);
-				setTimeout(connectDb, 5000);
-			}
+	return mongoose.connect(process.env.mongoUrl, (error) => {
+		if (error) {
+			console.error(
+				`Failed to connect to mongo on startup - retrying in 5 sec\n${error}`
+			);
+			setTimeout(connectDb, 5000);
 		}
-	);
+	});
 };
 
 mongoose.connection.on("connected", () => {
