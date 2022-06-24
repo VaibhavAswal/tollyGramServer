@@ -20,6 +20,14 @@ const UserSchema = new mongoose.Schema(
 			max: 50,
 			unique: true,
 		},
+		firstname: {
+			type: String,
+			required: true,
+		},
+		lastname: {
+			type: String,
+			required: true,
+		},
 		profilePicture: {
 			type: String,
 			default: "",

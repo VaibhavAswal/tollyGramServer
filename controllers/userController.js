@@ -1,9 +1,7 @@
-const router = require("express").Router();
-const User = require("../models/User");
-const authenticateToken = require("../middleware/authenticateToken");
+const User = require("../models/userModel");
 
-//update user
-router.put("/:id", authenticateToken, async (req, res) => {
+//update a user
+const updateUser = async (req, res) => {
 	if (req.userId === req.params.id) {
 		try {
 			await User.findByIdAndUpdate(req.params.id, {
@@ -16,9 +14,10 @@ router.put("/:id", authenticateToken, async (req, res) => {
 	} else {
 		return res.status(403).json("row row your boat fuck away from me.");
 	}
-});
-//delete user
-router.delete("/:id", authenticateToken, async (req, res) => {
+};
+
+//delete a user
+const deleteUser = async (req, res) => {
 	if (req.userId === req.params.id) {
 		try {
 			await User.findByIdAndDelete(req.params.id);
@@ -29,9 +28,10 @@ router.delete("/:id", authenticateToken, async (req, res) => {
 	} else {
 		return res.status(403).json("row row your boat fuck away from me.");
 	}
-});
+};
+
 //get a user
-router.get("/:id", async (req, res) => {
+const getUser = async (req, res) => {
 	try {
 		const user = await User.findById(req.params.id);
 		const { password, updatedAt, ...other } = user._doc;
@@ -39,9 +39,10 @@ router.get("/:id", async (req, res) => {
 	} catch (error) {
 		res.status(500).json(error);
 	}
-});
+};
+
 //follow a user
-router.put("/:id/follow", authenticateToken, async (req, res) => {
+const followUser = async (req, res) => {
 	if (req.userId !== req.params.id) {
 		try {
 			const user = await User.findById(req.params.id);
@@ -59,10 +60,10 @@ router.put("/:id/follow", authenticateToken, async (req, res) => {
 	} else {
 		res.status(403).json("Cannot follow self");
 	}
-});
+};
 
 //unfollow a user
-router.put("/:id/unfollow", authenticateToken, async (req, res) => {
+const unfollowUser = async (req, res) => {
 	if (req.userId !== req.params.id) {
 		try {
 			const user = await User.findById(req.params.id);
@@ -80,6 +81,27 @@ router.put("/:id/unfollow", authenticateToken, async (req, res) => {
 	} else {
 		res.status(403).json("cannot unfollow self");
 	}
-});
+};
 
-module.exports = router;
+//get all users
+const getAllUsers = async (req, res) => {
+	try {
+		let users = await User.find();
+		users = users.map((user) => {
+			const { password, ...otherDetails } = user._doc;
+			return otherDetails;
+		});
+		res.status(200).json(users);
+	} catch (error) {
+		res.status(500).json("error");
+	}
+};
+
+module.exports = {
+	updateUser,
+	deleteUser,
+	getUser,
+	followUser,
+	unfollowUser,
+	getAllUsers,
+};
