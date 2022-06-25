@@ -56,13 +56,17 @@ const UserSchema = new mongoose.Schema(
 			type: String,
 			max: 50,
 		},
-		from: {
+		country: {
 			type: String,
 			max: 50,
 		},
 		relationship: {
-			type: Number,
-			enum: [1, 2, 3],
+			type: String,
+			max: 50,
+		},
+		work: {
+			type: String,
+			max: 50,
 		},
 	},
 	{ timestamps: true }

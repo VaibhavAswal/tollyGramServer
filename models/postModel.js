@@ -6,6 +6,14 @@ const PostSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		userName: {
+			type: String,
+			required: true,
+		},
+		userProfile: {
+			type: String,
+			required: true,
+		},
 		desc: {
 			type: String,
 			max: 500,

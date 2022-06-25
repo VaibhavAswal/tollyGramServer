@@ -9,7 +9,7 @@ const {
 	getAllUsers,
 } = require("../controllers/userController");
 
-router.put("/:id", authenticateToken, updateUser);
+router.put("/:id", updateUser);
 router.delete("/:id", authenticateToken, deleteUser);
 router.get("/:id", getUser);
 router.put("/:id/follow", authenticateToken, followUser);

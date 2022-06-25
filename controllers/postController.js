@@ -5,8 +5,10 @@ const User = require("../models/userModel");
 const newPost = async (req, res) => {
 	const newPost = new Post({
 		userId: req.body.userId,
+		userName: req.body.userName,
 		desc: req.body.desc,
 		image: req.body.image,
+		userProfile: req.body.userProfile,
 	});
 	try {
 		const savedPost = await newPost.save();

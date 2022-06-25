@@ -2,19 +2,20 @@ const User = require("../models/userModel");
 
 //update a user
 const updateUser = async (req, res) => {
-	if (req.userId === req.params.id) {
-		try {
-			await User.findByIdAndUpdate(req.params.id, {
-				$set: req.body,
-			});
-			res.status(200).json("Account has been update");
-		} catch (error) {
-			return res.status(500).json(error);
-		}
-	} else {
-		return res.status(403).json("row row your boat fuck away from me.");
+	// if (req.userId === req.params.id) {
+	try {
+		const user = await User.findByIdAndUpdate(req.params.id, {
+			$set: req.body,
+		});
+		res.status(200).json(user);
+	} catch (error) {
+		return res.status(500).json(error);
 	}
 };
+//  else {
+// return res.status(403).json("row row your boat fuck away from me.");
+// }
+// };
 
 //delete a user
 const deleteUser = async (req, res) => {
