@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const jwt = require("jsonwebtoken");
 
 //update a user
 const updateUser = async (req, res) => {
@@ -7,7 +8,15 @@ const updateUser = async (req, res) => {
 		const user = await User.findByIdAndUpdate(req.params.id, {
 			$set: req.body,
 		});
-		res.status(200).json(user);
+		res
+			.status(200)
+			.json({
+				user,
+				accessToken: jwt.sign(
+					req.params.id.toString(),
+					process.env.ACCESS_TOKEN_SECRET
+				),
+			});
 	} catch (error) {
 		return res.status(500).json(error);
 	}
