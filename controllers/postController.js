@@ -1,5 +1,6 @@
 const Post = require("../models/postModel");
 const User = require("../models/userModel");
+const mongoose =  require("mongoose")
 
 //create new post
 const newPost = async (req, res) => {
@@ -80,19 +81,41 @@ const getPost = async (req, res) => {
 
 //get all timeline posts
 const getTimelinePosts = async (req, res) => {
+	const userId = req.params.id
 	try {
-		const currentUser = await User.findById(req.params.id);
-		// console.log(req.userId);
-		// console.log(currentUser);
-		const userPosts = await Post.find({ userId: currentUser._id });
-		const friendPosts = await Promise.all(
-			currentUser.following.map((friendId) => {
-				return Post.find({ userId: friendId });
-			})
-		);
-		res.json(userPosts.concat(...friendPosts));
-	} catch (err) {
-		res.status(500).json(err);
+	  const currentUserPosts = await Post.find({ userId: userId });
+  
+	  const followingPosts = await User.aggregate([
+		{ 
+		  $match: {
+			_id: new mongoose.Types.ObjectId(userId),
+		  },
+		},
+		{
+		  $lookup: {
+			from: "posts",
+			localField: "following",
+			foreignField: "userId",
+			as: "followingPosts",
+		  },
+		},
+		{
+		  $project: {
+			followingPosts: 1,
+			_id: 0,
+		  },
+		},
+	  ]);
+  
+	  res.status(200).json(
+		currentUserPosts
+		  .concat(...followingPosts[0].followingPosts)
+		  .sort((a, b) => {
+			return new Date(b.createdAt) - new Date(a.createdAt);
+		  })
+	  );
+	} catch (error) {
+	  res.status(500).json(error);
 	}
 };
 

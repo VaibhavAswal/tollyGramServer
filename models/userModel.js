@@ -36,6 +36,10 @@ const UserSchema = new mongoose.Schema(
 			type: String,
 			default: "",
 		},
+        story:{
+            type: String,
+            default: null,
+        },
 		followers: {
 			type: Array,
 			default: [],

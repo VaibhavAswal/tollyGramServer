@@ -12,8 +12,8 @@ const {
 router.put("/:id", updateUser);
 router.delete("/:id", authenticateToken, deleteUser);
 router.get("/:id", getUser);
-router.put("/:id/follow", authenticateToken, followUser);
-router.put("/:id/unfollow", authenticateToken, unfollowUser);
+router.put("/:id/follow", followUser);
+router.put("/:id/unfollow",unfollowUser);
 router.get("/", getAllUsers);
 
 module.exports = router;
