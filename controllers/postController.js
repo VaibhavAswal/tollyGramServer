@@ -10,6 +10,7 @@ const newPost = async (req, res) => {
 		desc: req.body.desc,
 		image: req.body.image,
 		userProfile: req.body.userProfile,
+        location: req.body.userProfile,
 	});
 	try {
 		const savedPost = await newPost.save();
