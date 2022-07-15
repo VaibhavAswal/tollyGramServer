@@ -1,5 +1,6 @@
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
+const Post = require("../models/postModel");
 
 //update a user
 const updateUser = async (req, res) => {
@@ -8,17 +9,16 @@ const updateUser = async (req, res) => {
 		const user = await User.findByIdAndUpdate(req.params.id, {
 			$set: req.body,
 		});
-		const newUser = await User.findById(user._id)
-		res
-			.status(200)
-			.json({
-				user: newUser,
-				accessToken: jwt.sign(
-					req.params.id.toString(),
-					process.env.ACCESS_TOKEN_SECRET
-				),
-			});
+		const newUser = await User.findById(user._id);
+		res.status(200).json({
+			user: newUser,
+			accessToken: jwt.sign(
+				req.params.id.toString(),
+				process.env.ACCESS_TOKEN_SECRET
+			),
+		});
 	} catch (error) {
+		console.log(error);
 		return res.status(500).json(error);
 	}
 };
@@ -44,9 +44,16 @@ const deleteUser = async (req, res) => {
 //get a user
 const getUser = async (req, res) => {
 	try {
-		const user = await User.findById(req.params.id);
-		const { password, updatedAt, ...other } = user._doc;
-		res.status(200).json(other);
+		const user = await User.findOne({
+			username: req.params.id,
+		});
+		const userPosts = await Post.find({ userId: user._id });
+		const { password, updatedAt, isAdmin, createdAt, email, ...other } =
+			user._doc;
+		res.status(200).json({
+			user: other,
+			userPosts: userPosts,
+		});
 	} catch (error) {
 		res.status(500).json(error);
 	}
