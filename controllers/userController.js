@@ -115,6 +115,21 @@ const getAllUsers = async (req, res) => {
 	}
 };
 
+//get followers list
+const getFollowing = async (req, res) => {
+	try {
+		const following = await User.find({
+			followers: {
+				$elemMatch: { $in: [req.params.id], $exists: true },
+			},
+		});
+		res.status(200).json(following);
+	} catch (error) {
+		res.status(500).json(error);
+		console.log(error);
+	}
+};
+
 module.exports = {
 	updateUser,
 	deleteUser,
@@ -122,4 +137,5 @@ module.exports = {
 	followUser,
 	unfollowUser,
 	getAllUsers,
+	getFollowing,
 };
