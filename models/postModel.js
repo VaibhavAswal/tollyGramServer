@@ -10,6 +10,10 @@ const PostSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		fullName: {
+			type: String,
+			required: true,
+		},
 		userProfile: {
 			type: String,
 			required: true,

@@ -130,6 +130,20 @@ const getFollowing = async (req, res) => {
 	}
 };
 
+const getUserBasic = async (req, res) => {
+	try {
+		const user = await User.findById(req.params.id);
+		const data = {
+			username: user.username,
+			fullname: user.firstname + " " + user.lastname,
+			profilePicture: `https://firebasestorage.googleapis.com/v0/b/social-media-af1e7.appspot.com/o/${user._id}%2FprofilePicture%2FdisplayPicture`,
+		};
+		res.status(200).json(data);
+	} catch (error) {
+		res.status(500).json("Error");
+	}
+};
+
 module.exports = {
 	updateUser,
 	deleteUser,

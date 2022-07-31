@@ -1,6 +1,6 @@
 const Post = require("../models/postModel");
 const User = require("../models/userModel");
-const mongoose =  require("mongoose")
+const mongoose = require("mongoose");
 
 //create new post
 const newPost = async (req, res) => {
@@ -10,7 +10,8 @@ const newPost = async (req, res) => {
 		desc: req.body.desc,
 		image: req.body.image,
 		userProfile: req.body.userProfile,
-        location: req.body.location,
+		location: req.body.location,
+		fullName: req.body.fullName,
 	});
 	try {
 		const savedPost = await newPost.save();
@@ -82,41 +83,53 @@ const getPost = async (req, res) => {
 
 //get all timeline posts
 const getTimelinePosts = async (req, res) => {
-	const userId = req.params.id
+	const userId = req.params.id;
 	try {
-	  const currentUserPosts = await Post.find({ userId: userId });
-  
-	  const followingPosts = await User.aggregate([
-		{ 
-		  $match: {
-			_id: new mongoose.Types.ObjectId(userId),
-		  },
-		},
-		{
-		  $lookup: {
-			from: "posts",
-			localField: "following",
-			foreignField: "userId",
-			as: "followingPosts",
-		  },
-		},
-		{
-		  $project: {
-			followingPosts: 1,
-			_id: 0,
-		  },
-		},
-	  ]);
-  
-	  res.status(200).json(
-		currentUserPosts
-		  .concat(...followingPosts[0].followingPosts)
-		  .sort((a, b) => {
-			return new Date(b.createdAt) - new Date(a.createdAt);
-		  })
-	  );
+		const currentUserPosts = await Post.find({ userId: userId });
+
+		const followingPosts = await User.aggregate([
+			{
+				$match: {
+					_id: new mongoose.Types.ObjectId(userId),
+				},
+			},
+			{
+				$lookup: {
+					from: "posts",
+					localField: "following",
+					foreignField: "userId",
+					as: "followingPosts",
+				},
+			},
+			{
+				$project: {
+					followingPosts: 1,
+					_id: 0,
+				},
+			},
+		]);
+
+		res.status(200).json(
+			currentUserPosts
+				.concat(...followingPosts[0].followingPosts)
+				.sort((a, b) => {
+					return new Date(b.createdAt) - new Date(a.createdAt);
+				})
+		);
 	} catch (error) {
-	  res.status(500).json(error);
+		res.status(500).json(error);
+	}
+};
+
+//add comment
+const addComment = async (req, res) => {
+	try {
+		const post = await Post.findById(req.params.id);
+
+		await post.updateOne({ $push: { comments: req.body.comment } });
+		res.status(200).json("sucess");
+	} catch (error) {
+		res.status(500).json(error);
 	}
 };
 
@@ -126,5 +139,6 @@ module.exports = {
 	deletePost,
 	likePost,
 	getPost,
+	addComment,
 	getTimelinePosts,
 };
