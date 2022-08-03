@@ -136,7 +136,7 @@ const getUserBasic = async (req, res) => {
 		const data = {
 			username: user.username,
 			fullname: user.firstname + " " + user.lastname,
-			profilePicture: `https://firebasestorage.googleapis.com/v0/b/social-media-af1e7.appspot.com/o/${user._id}%2FprofilePicture%2FdisplayPicture`,
+			profilePicture: `https://firebasestorage.googleapis.com/v0/b/social-media-af1e7.appspot.com/o/${user._id}%2FprofilePicture%2FdisplayPicture?alt=media`,
 		};
 		res.status(200).json(data);
 	} catch (error) {
@@ -152,4 +152,5 @@ module.exports = {
 	unfollowUser,
 	getAllUsers,
 	getFollowing,
+	getUserBasic,
 };

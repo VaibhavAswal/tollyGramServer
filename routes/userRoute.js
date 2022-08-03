@@ -8,6 +8,7 @@ const {
 	unfollowUser,
 	getAllUsers,
 	getFollowing,
+	getUserBasic,
 } = require("../controllers/userController");
 
 router.put("/:id", updateUser);
@@ -17,5 +18,6 @@ router.put("/:id/follow", followUser);
 router.put("/:id/unfollow", unfollowUser);
 router.get("/:id/following", getFollowing);
 router.get("/", getAllUsers);
+router.get("/:id/getUserBasic", getUserBasic);
 
 module.exports = router;
