@@ -8,6 +8,7 @@ const {
 	getPost,
 	getTimelinePosts,
 	addComment,
+	deleteComment,
 } = require("../controllers/postController");
 
 router.post("/", newPost);
@@ -17,5 +18,6 @@ router.put("/:id/like", likePost);
 router.get("/:id", getPost);
 router.get("/:id/timeline", getTimelinePosts);
 router.post("/:id/comment", addComment);
+router.put("/:id/delete/comment", authenticateToken, deleteComment);
 
 module.exports = router;

@@ -133,6 +133,18 @@ const addComment = async (req, res) => {
 	}
 };
 
+const deleteComment = async (req,res) => {
+	try {
+		const {comment} = req.body;
+		const post = await Post.findById(req.params.id);
+		await post.updateOne({ $pull: { comments: comment } });
+		res.status(200).json("sucess");
+	} catch (error) {
+		res.status(500).json(error);
+	}
+
+}
+
 module.exports = {
 	newPost,
 	updatePost,
@@ -141,4 +153,5 @@ module.exports = {
 	getPost,
 	addComment,
 	getTimelinePosts,
+	deleteComment,
 };
