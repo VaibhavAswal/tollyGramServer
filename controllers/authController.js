@@ -82,15 +82,14 @@ const resetPassword = async (req,res) => {
 		const { email, password, newpassword } = req.body;
 		const user = await User.findOne({email:email.toLowerCase()});
 		const verified = await bcrypt.compare(password,user.password);
-		console.log(verified);
-		/*if(verified){
+		if(verified){
 			const salt = await bcrypt.genSalt(10);
 			const hashed = await bcrypt.hash(newpassword, salt);
 			const newPassword = await User.findByIdAndUpdate(user._id,{password:hashed,},{new:true,},);
 			res.json(newPassword);
 		}else{
 			throw new Error("Wrong Password");
-		}*/
+		}
 	} catch (error) {
 		console.log(error);
 		res.status(500).json("error");
