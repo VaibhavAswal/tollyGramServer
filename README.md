@@ -1,6 +1,11 @@
 # gangLandServer
 Backend code for https://tollygram.vaibhavaswal.codes/ social media website
 
+##How to run
+clone this repo
+run npm i to install dependencies
+run nodemon index.js to start server
+
 currently working on:
 private chats
 
