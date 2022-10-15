@@ -6,7 +6,7 @@ clone this repo
 run npm i to install dependencies
 run nodemon index.js to start server
 
-currently working on:
+## currently working on:
 private chats
 
 want to contribute?
