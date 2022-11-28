@@ -1,5 +1,5 @@
 # gangLandServer
-Backend code for https://tollygram.vaibhavaswal.codes/ social media website
+Backend code for https://moonlit-cassata-2eeda7.netlify.app/ social media website
 
 ## How to run
 clone this repo\
