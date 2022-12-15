@@ -4,7 +4,7 @@
 	"description": "server for my gangland social media platform",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "echo \"Error: no test specified\""
 	},
 	"author": "Vaibhav Aswal",
 	"license": "ISC",
